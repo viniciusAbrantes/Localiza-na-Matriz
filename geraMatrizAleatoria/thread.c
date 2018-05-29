@@ -13,7 +13,7 @@ void insereElemento(tmatriz **ini, int i, int j, double valor);
 
 int main() {
   //inicio da matriz esparça:
-  tmatriz *ini;
+  tmatriz *ini = NULL;
 
   //código para imprimir caracteres com acento:
   setlocale(LC_ALL, "portuguese");
@@ -66,5 +66,5 @@ void insereElemento(tmatriz **ini, int i, int j, double valor) {
   novo_elemento->ante_linha = NULL;
   novo_elemento->prox_coluna = NULL;
 
-
+  if
 }

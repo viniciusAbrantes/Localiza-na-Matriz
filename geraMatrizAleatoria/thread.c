@@ -12,8 +12,8 @@ int main() {
   FILE *pfile = fopen(nome_arq, "r");
   if(pfile != NULL) printf("Abriu certo\n");
   else printf("Abriu errado\n");
-  //fscanf(pfile, "%lf", &valor);
-  //printf("Primeiro num = %f\n",valor);
+  fscanf(pfile, "%lf", &valor);
+  printf("Primeiro num = %f\n",valor);
 
   return 0;
 }

@@ -42,6 +42,7 @@ int main() {
   insereElemento(&ini_l, &percorre, 0, 0, vtemp);
   inicio = ini_l;
 
+  //criando as demais linhas da matriz:
   for(j = 1; j < num_colunas; j++) {
     fscanf(pfile, "%lf", &vtemp);
     insereElemento(&ini_l, &percorre, 0, j, vtemp);
@@ -65,13 +66,16 @@ void insereElemento(tmatriz **pini_l, tmatriz **ppercorre, int i, int j, double 
   novo_elemento->y = j;
   novo_elemento->prox_l = NULL;
   novo_elemento->prox_c = NULL;
-  novo_elemento->l_ant = NULL; //Não existe elemento anterior
+  novo_elemento->l_ant = NULL;
 
-  if(*ppercorre == NULL) { //Primeiro elemento da matriz
+  //Para o primeiro elemento da matriz:
+  if(*ppercorre == NULL) {
     *ppercorre = novo_elemento;
     *pini_l = novo_elemento;
   }
-  else { //Não é o primeiro elemento da matriz
+
+  //Para os demais elementos da matriz:
+  else {
     if(j == 0) { //Se for o primeiro elemento da linha
       (*ppercorre)->prox_l = novo_elemento;
       (*pini_l)->prox_l = novo_elemento;
@@ -79,7 +83,7 @@ void insereElemento(tmatriz **pini_l, tmatriz **ppercorre, int i, int j, double 
       *ppercorre = novo_elemento;
       *pini_l = novo_elemento;
     }
-    else{
+    else{ //Se não for o primeiro elemento da linha
     (*ppercorre)->prox_c = novo_elemento;
     novo_elemento->l_ant = (*pini_l)->l_ant;
     *ppercorre = novo_elemento;

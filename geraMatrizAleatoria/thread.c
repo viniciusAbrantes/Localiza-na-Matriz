@@ -13,7 +13,7 @@ void insereElemento(tmatriz **ini_l, tmatriz **percorre, int i, int j, double va
 int main() {
   //inicio da matriz esparça:
   tmatriz *inicio = NULL;
-  tmatriz *ini_l = NULL, percorre = NULL;
+  tmatriz *ini_l = NULL, *percorre = NULL;
 
   //código para imprimir caracteres com acento:
   setlocale(LC_ALL, "portuguese");
@@ -42,17 +42,17 @@ int main() {
   insereElemento(&ini_l, &percorre, 0, 0, vtemp);
   inicio = ini_l;
 
-  //for(j = 1; j < num_colunas; j++) {
-  //  fscanf(pfile, "%lf", &vtemp);
-  //  insereElemento(&ini_l, &percorre, 0, j, vtemp);
-  //}
+  for(j = 1; j < num_colunas; j++) {
+    fscanf(pfile, "%lf", &vtemp);
+    insereElemento(&ini_l, &percorre, 0, j, vtemp);
+  }
 
-  //for(i = 1; i < num_linha; i++) {
-  //  for(j = 0; j < num_colunas; j++) {
-  //    fscanf(pfile, "%lf", &valor);
-  //    insereElemento(&ini_l, &percore, i, j, vtemp);
-  //  }
-  //}
+  for(i = 1; i < num_linhas; i++) {
+    for(j = 0; j < num_colunas; j++) {
+      fscanf(pfile, "%lf", &valor);
+      insereElemento(&ini_l, &percorre, i, j, vtemp);
+    }
+  }
 
   return 0;
 }
@@ -75,7 +75,7 @@ void insereElemento(tmatriz **pini_l, tmatriz **ppercorre, int i, int j, double 
     if(j == 0) { //Se for o primeiro elemento da linha
       (*ppercorre)->prox_l = novo_elemento;
       (*pini_l)->prox_l = novo_elemento;
-      novo_elemento->l_ant = pini_l;
+      novo_elemento->l_ant = *pini_l;
       *ppercorre = novo_elemento;
       *pini_l = novo_elemento;
     }
@@ -83,5 +83,7 @@ void insereElemento(tmatriz **pini_l, tmatriz **ppercorre, int i, int j, double 
     (*ppercorre)->prox_c = novo_elemento;
     novo_elemento->l_ant = (*pini_l)->l_ant;
     *ppercorre = novo_elemento;
+    }
   }
+  printf("Elemento (%d, %d) = %lf\n", novo_elemento->x, novo_elemento->y, novo_elemento->valor);
 }

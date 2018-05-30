@@ -2,24 +2,25 @@
 #include <stdlib.h>
 #include <locale.h>
 
-typedef struct matriz {
+typedef struct elemento_matriz {
   double valor;
   int x, y;
-  struct matriz *prox_linha, *ante_linha, *prox_coluna;
+  struct elemento_matriz *prox_l, *l_ant, *prox_c;
 }tmatriz;
 
-int geraMatrizEsparca(tmatriz **ini, FILE *pfile, int num_linha, int num_coluna);
-void insereElemento(tmatriz **ini, int i, int j, double valor);
+void insereElemento(tmatriz **ini_l, tmatriz **percorre, int i, int j, double valor);
 
 int main() {
   //inicio da matriz esparça:
-  tmatriz *ini = NULL;
+  tmatriz *inicio = NULL;
+  tmatriz *ini_l = NULL, percorre = NULL;
 
   //código para imprimir caracteres com acento:
   setlocale(LC_ALL, "portuguese");
   //printf("\e[H\e[2J"); //Limpa o terminal
   int num_linhas, num_colunas, num_threads;
-  double valor;
+  int i, j;
+  double valor, vtemp;
   char nome_arq[20];
 
   printf("Informe o número de linhas da matriz: ");
@@ -36,35 +37,49 @@ int main() {
   printf("Informe o número de threads: ");
   scanf("%d", &num_threads);
 
-  //chamando a função para a criação da matriz esparça:
-  //geraMatrizEsparca(&ini,pfile, num_linha, num_coluna);
+  //criando a primeirra linha da matriz:
+  fscanf(pfile, "%lf", &vtemp);
+  insereElemento(&ini_l, &percorre, 0, 0, vtemp);
+  inicio = ini_l;
 
-  fscanf(pfile, "%lf", &valor);
-  printf("Primeiro num = %f\n",valor);
+  for(j = 1; j < num_colunas; j++) {
+    fscanf(pfile, "%lf", &vtemp);
+    insereElemento(&ini_l, &percorre, 0, j, vtemp);
+  }
+
+  for(i = 1; i < num_linha; i++) {
+    for(j = 0; j < num_colunas; j++) {
+      fscanf(pfile, "%lf", &valor);
+      insereElemento(&ini_l, &percore, i, j, vtemp);
+    }
+  }
 
   return 0;
 }
 
-int geraMatrizEsparca(tmatriz **ini, FILE *pfile, int num_linha, int num_coluna) {
-  int i, j;
-  double valor;
-  for(i = 1; i < num_linha; i++) {
-    for(j = 0; j < num_coluna; j++) {
-      fscanf(pfile, "%lf", &valor);
-      insereElemento(ini, i, j, valor);
-    }
-  }
-}
-
-void insereElemento(tmatriz **ini, int i, int j, double valor) {
+void insereElemento(tmatriz **pini_l, tmatriz **ppercorre, int i, int j, double valor) {
   tmatriz *novo_elemento = (tmatriz*) malloc(sizeof(tmatriz));
 
   novo_elemento->valor = valor;
   novo_elemento->x = i;
   novo_elemento->y = j;
-  novo_elemento->prox_linha = NULL;
-  novo_elemento->ante_linha = NULL;
-  novo_elemento->prox_coluna = NULL;
+  novo_elemento->prox_l = NULL;
+  novo_elemento->prox_c = NULL;
 
-  if
+  if(*ppercorre == NULL) { //Primeiro elemento da matriz
+    novo_elemento->l_ant = NULL; //Não existe elemento anterior
+    *ppercorre = novo_elemento;
+    *pini_l = novo_elemento;
+  }
+  else { //Não é o primeiro elemento da matriz
+    novo_elemento->l_ant = *ppercorre; //percorre é o elemento anterior
+    (*ppercorre)->prox_c = novo_elemento;
+    *ppercorre = novo_elemento;
+  }
+
+  if((j == 0) && (*pini_l != NULL)) {
+    preenche as prox_l;
+  }
+  else if(j == 0)*pini_l = novo_elemento;
+
 }

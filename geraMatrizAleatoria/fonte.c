@@ -92,7 +92,7 @@ void* procuraValor(void* arg) {
   printf("\nPrintando argumento");
   printf("\n num_linhas = %d", parg->num_linhas);
   printf("\n thread %d", parg->num_thread+1);
-  printf("\n qtd_threads = %d", parg->qtd_threads);
+  printf("\n qtd_threads = %d\n", parg->qtd_threads);
   //printf("\nPrimeiro elemtento: %.1lf", parg->matriz[0][0]);
   //for (i = parg->num_thread; i < parg->num_linhas; i+=parg->qtd_threads) {
   //}

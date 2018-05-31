@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include <locale.h>
 
-int main() {
+void printMatriz(int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]);
+void geraMatriz(FILE *pfile, int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]);
 
-  //código para imprimir caracteres com acento:
-  setlocale(LC_ALL, "portuguese");
-  //printf("\e[H\e[2J"); //Limpa o terminal
+int main() {
+  setlocale(LC_ALL, "portuguese"); //código para imprimir caracteres com acento
+  printf("\e[H\e[2J"); //Limpa o terminal
   int num_linhas, num_colunas, num_threads;
-  int i, j;
-  double valor, vtemp;
+  double valor;
   char nome_arq[20];
 
+  //Entrada de dados---------------------------------
   printf("Informe o número de linhas da matriz: ");
   scanf("%d", &num_linhas);
   printf("Informe o número de colunas da matriz: ");
@@ -24,22 +25,38 @@ int main() {
   }
   printf("Informe o número de threads: ");
   scanf("%d", &num_threads);
+  //-------------------------------------------------
 
-  //Criando a matriz
+  //Criando a matriz---------------------------------
   double matriz[num_linhas][num_colunas];
+  geraMatriz(pfile, num_linhas, num_colunas, matriz);
+  printMatriz(num_linhas, num_colunas, matriz);
+  //-------------------------------------------------
+
+  return 0;
+}
+
+void geraMatriz(FILE *pfile, int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]) {
+  double vtemp;
+  int i, j;
+
+  printf("\nCarregando a matriz do arquivo...\n");
+
   for(i = 0; i < num_linhas; i++) {
     for(j = 0; j < num_colunas; j++) {
       fscanf(pfile, "%lf", &vtemp);
       matriz[i][j] = vtemp;
     }
   }
+}
 
-  //Printando os elementos para testar
+void printMatriz(int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]) {
+  int i, j;
+  printf("\nMatriz gerada:\n");
   for(i = 0; i < num_linhas; i++) {
     for(j = 0; j < num_colunas; j++) {
-      printf("(%d,%d) = %lf\n", i, j, matriz[i][j]);
+      printf("%lf ", matriz[i][j]);
     }
+    printf("\n");
   }
-
-  return 0;
 }

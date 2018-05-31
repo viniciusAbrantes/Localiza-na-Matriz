@@ -47,7 +47,7 @@ int main() {
   printMatriz(num_linhas, num_colunas, matriz);
   //-------------------------------------------------
 
-  //Criando vetor de threads e argumentos----------------------
+  //Criando vetor de threads e argumentos------------
   printf("\nGerando vetor de threads e argumentos...\n");
   pthread_t threads[qtd_threads];
   tipo_arg arg[qtd_threads];

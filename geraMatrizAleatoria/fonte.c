@@ -108,7 +108,7 @@ void printCoordenadas(int num_linhas, int num_colunas, double matriz[num_linhas]
   int i, j;
   for(i = 0; i < num_linhas; i++) {
     for(j = 0; j < num_colunas; j++) {
-      if(matriz[i][j] == 1)
+      if(matriz[i][j] == 1.0)
         printf("(%d,%d)\n", i, j);
     }
   }

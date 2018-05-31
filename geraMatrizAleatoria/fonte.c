@@ -3,17 +3,20 @@
 
 typedef struct argumento {
   int num_linhas;
-  int num_arg;
+  int num_thread;
+  int qtd_threads;
   double valor;
+  double matriz;
 }tipo_arg;
 
 void printMatriz(int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]);
 void geraMatriz(FILE *pfile, int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]);
+void* procuraValor(void* arg);
 
 int main() {
   setlocale(LC_ALL, "portuguese"); //código para imprimir caracteres com acento
   printf("\e[H\e[2J"); //Limpa o terminal
-  int num_linhas, num_colunas, num_threads;
+  int num_linhas, num_colunas, qtd_threads;
   int i;
   double valor;
   char nome_arq[20];
@@ -31,22 +34,9 @@ int main() {
     return 0;
   }
   printf("Informe o número de threads: ");
-  scanf("%d", &num_threads);
+  scanf("%d", &qtd_threads);
   printf("Informe o valor a ser buscado: ");
   scanf("%lf", &valor);
-  //-------------------------------------------------
-
-  //Criando vetor de argumentos----------------------
-  printf("\nGerando vetor de argumentos...\n");
-  tipo_arg arg[num_threads];
-  for(i = 0; i < num_threads; i++) {
-    arg[i].num_linhas = num_linhas;
-    arg[i].num_arg = i;
-    arg[i].valor = valor;
-  }
-  i--;
-  printf("Último argumento:\n");
-  printf(" num_linhas = %d\n num_arg = %d\n valor = %.2lf\n", arg[i].num_linhas, arg[i].num_arg, arg[i].valor);
   //-------------------------------------------------
 
   //Criando a matriz---------------------------------
@@ -54,6 +44,20 @@ int main() {
   geraMatriz(pfile, num_linhas, num_colunas, matriz);
   printMatriz(num_linhas, num_colunas, matriz);
   //-------------------------------------------------
+
+  //Criando vetor de argumentos----------------------
+  printf("\nGerando vetor de argumentos...\n");
+  tipo_arg arg[qtd_threads];
+  for(i = 0; i < qtd_threads; i++) {
+    arg[i].num_linhas = num_linhas;
+    arg[i].num_thread = i;
+    arg[i].qtd_threads = qtd_threads;
+    arg[i].valor = valor;
+    //arg[i].matriz = matriz;
+  }
+  //-------------------------------------------------
+
+  procuraValor(&arg[0]);
 
   return 0;
 }
@@ -80,4 +84,16 @@ void printMatriz(int num_linhas, int num_colunas, double matriz[num_linhas][num_
     }
     printf("\n");
   }
+}
+
+void* procuraValor(void* arg) {
+  tipo_arg* parg = arg;
+  int i, j;
+  printf("\nPrintando argumento");
+  printf("\n num_linhas = %d", parg->num_linhas);
+  printf("\n thread %d", parg->num_thread+1);
+  printf("\n qtd_threads = %d", parg->qtd_threads);
+  //printf("\nPrimeiro elemtento: %.1lf", parg->matriz[0][0]);
+  //for (i = parg->num_thread; i < parg->num_linhas; i+=parg->qtd_threads) {
+  //}
 }

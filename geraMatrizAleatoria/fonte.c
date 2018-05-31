@@ -11,7 +11,7 @@ typedef struct argumento {
   double *matriz;
 }tipo_arg;
 
-void printMatriz(int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]);
+void printCoordenadas(int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]);
 void geraMatriz(FILE *pfile, int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]);
 void* procuraValor(void* arg);
 
@@ -44,7 +44,6 @@ int main() {
   //Criando a matriz---------------------------------
   double matriz[num_linhas][num_colunas];
   geraMatriz(pfile, num_linhas, num_colunas, matriz);
-  printMatriz(num_linhas, num_colunas, matriz);
   //-------------------------------------------------
 
   //Criando vetor de threads e argumentos------------
@@ -71,6 +70,11 @@ int main() {
     pthread_join(threads[i], NULL);
   //-------------------------------------------------
 
+  //Ordenando a lista encadeada----------------------
+  printf("\n");
+  printCoordenadas(num_linhas, num_colunas, matriz);
+  //-------------------------------------------------
+
   return 0;
 }
 
@@ -87,28 +91,25 @@ void geraMatriz(FILE *pfile, int num_linhas, int num_colunas, double matriz[num_
   }
 }
 
-void printMatriz(int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]) {
-  int i, j;
-  printf("\nMatriz gerada:\n");
-  for(i = 0; i < num_linhas; i++) {
-    for(j = 0; j < num_colunas; j++) {
-      printf("%.1lf ", matriz[i][j]);
-    }
-    printf("\n");
-  }
-}
-
 void* procuraValor(void* arg) {
   tipo_arg* parg = arg;
   int i, j;
 
   for (i = parg->num_thread; i < parg->num_linhas; i+=parg->qtd_threads) {
-      printf("\nThread %d procurando na linha %d...\n", parg->num_thread, i);
       for(j = 0; j < parg->num_colunas; j++) {
-        if(parg->matriz[i*parg->num_colunas+j] == parg->valor) {
-          //AQUI VEM A ALOCAÇÃO DINÂMICA
-          printf("Thread %d achou!\n", parg->num_thread);
-        }
+        if(parg->matriz[i*parg->num_colunas+j] == parg->valor)
+          parg->matriz[i*parg->num_colunas+j] = 1.0;
+        else parg->matriz[i*parg->num_colunas+j] = 0.0;
       }
+  }
+}
+
+void printCoordenadas(int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]) {
+  int i, j;
+  for(i = 0; i < num_linhas; i++) {
+    for(j = 0; j < num_colunas; j++) {
+      if(matriz[i][j] == 1)
+        printf("(%d,%d)\n", i, j);
+    }
   }
 }

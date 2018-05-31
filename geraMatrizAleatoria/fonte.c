@@ -70,7 +70,7 @@ int main() {
     pthread_join(threads[i], NULL);
   //-------------------------------------------------
 
-  //Ordenando a lista encadeada----------------------
+  //Printando as coordenadas-------------------------
   printf("\n");
   printCoordenadas(num_linhas, num_colunas, matriz);
   //-------------------------------------------------

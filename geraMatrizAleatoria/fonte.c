@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <locale.h>
+#include <pthread.h>
 
 typedef struct argumento {
   int num_linhas;
+  int num_colunas;
   int num_thread;
   int qtd_threads;
   double valor;
-  double matriz;
+  double *matriz;
 }tipo_arg;
 
 void printMatriz(int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]);
@@ -45,19 +47,29 @@ int main() {
   printMatriz(num_linhas, num_colunas, matriz);
   //-------------------------------------------------
 
-  //Criando vetor de argumentos----------------------
-  printf("\nGerando vetor de argumentos...\n");
+  //Criando vetor de threads e argumentos----------------------
+  printf("\nGerando vetor de threads e argumentos...\n");
+  pthread_t threads[qtd_threads];
   tipo_arg arg[qtd_threads];
   for(i = 0; i < qtd_threads; i++) {
     arg[i].num_linhas = num_linhas;
+    arg[i].num_colunas = num_colunas;
     arg[i].num_thread = i;
     arg[i].qtd_threads = qtd_threads;
     arg[i].valor = valor;
-    //arg[i].matriz = matriz;
+    arg[i].matriz = matriz[0];
   }
   //-------------------------------------------------
 
-  procuraValor(&arg[0]);
+  //Criando as threads-------------------------------
+  for(i = 0; i < qtd_threads; i++)
+    pthread_create(&threads[i], NULL, procuraValor, (void*) &arg[i]);
+  //-------------------------------------------------
+
+  //Esperando as threads finalizarem-----------------
+  for(i = 0; i < qtd_threads; i++)
+    pthread_join(threads[i], NULL);
+  //-------------------------------------------------
 
   return 0;
 }
@@ -89,11 +101,14 @@ void printMatriz(int num_linhas, int num_colunas, double matriz[num_linhas][num_
 void* procuraValor(void* arg) {
   tipo_arg* parg = arg;
   int i, j;
-  printf("\nPrintando argumento");
-  printf("\n num_linhas = %d", parg->num_linhas);
-  printf("\n thread %d", parg->num_thread+1);
-  printf("\n qtd_threads = %d\n", parg->qtd_threads);
-  //printf("\nPrimeiro elemtento: %.1lf", parg->matriz[0][0]);
-  //for (i = parg->num_thread; i < parg->num_linhas; i+=parg->qtd_threads) {
-  //}
+
+  for (i = parg->num_thread; i < parg->num_linhas; i+=parg->qtd_threads) {
+      printf("\nThread %d procurando na linha %d...\n", parg->num_thread, i);
+      for(j = 0; j < parg->num_colunas; j++) {
+        if(parg->matriz[i*parg->num_colunas+j] == parg->valor) {
+          //AQUI VEM A ALOCAÇÃO DINÂMICA
+          printf("Thread %d achou!\n", parg->num_thread);
+        }
+      }
+  }
 }

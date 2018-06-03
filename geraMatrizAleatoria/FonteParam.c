@@ -19,7 +19,7 @@ void* procuraValor(void* arg);
 
 int main( int argc, char *argv[ ]) {
   setlocale(LC_ALL, "portuguese"); //código para imprimir caracteres com acento
-  
+
   int num_linhas, num_colunas, qtd_threads;
   int i;
   double valor;
@@ -44,6 +44,7 @@ int main( int argc, char *argv[ ]) {
   //Criando a matriz---------------------------------
   double matriz[num_linhas][num_colunas];
   geraMatriz(pfile, num_linhas, num_colunas, matriz);
+  fclose(pfile);
   //-------------------------------------------------
 
   //Criando vetor de threads e argumentos------------

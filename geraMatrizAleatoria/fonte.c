@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include <locale.h>
 #include <pthread.h>
 
@@ -13,37 +15,34 @@ typedef struct argumento {
 
 void printCoordenadas(int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]);
 void geraMatriz(FILE *pfile, int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]);
-void* procuraValor(void* arg);
+void* procuraValor(void *arg);
 
-int main() {
+int main( int argc, char *argv[ ]) {
   setlocale(LC_ALL, "portuguese"); //código para imprimir caracteres com acento
-  printf("\e[H\e[2J"); //Limpa o terminal
+
   int num_linhas, num_colunas, qtd_threads;
   int i;
   double valor;
-  char nome_arq[20];
+  char nome_arq[150];
 
   //Entrada de dados---------------------------------
-  printf("Informe o número de linhas da matriz: ");
-  scanf("%d", &num_linhas);
-  printf("Informe o número de colunas da matriz: ");
-  scanf("%d", &num_colunas);
-  printf("Informe o nome do arquivo matriz: ");
-  scanf("%s", nome_arq);
+  num_linhas = atoi(argv[1]);
+  num_colunas = atoi(argv[2]);
+  strcpy (nome_arq,(argv[3]));
+
   FILE *pfile = fopen(nome_arq, "r");
   if(pfile == NULL) {
     printf("Erro!\nArquivo não encontrado!\n");
     return 0;
   }
-  printf("Informe o número de threads: ");
-  scanf("%d", &qtd_threads);
-  printf("Informe o valor a ser buscado: ");
-  scanf("%lf", &valor);
+  qtd_threads = atoi(argv[4]);
+  valor = atof(argv[5]);
   //-------------------------------------------------
 
   //Criando a matriz---------------------------------
   double matriz[num_linhas][num_colunas];
   geraMatriz(pfile, num_linhas, num_colunas, matriz);
+  fclose(pfile); //Fechando arquivo
   //-------------------------------------------------
 
   //Criando vetor de threads e argumentos------------
@@ -82,7 +81,7 @@ void geraMatriz(FILE *pfile, int num_linhas, int num_colunas, double matriz[num_
   double vtemp;
   int i, j;
 
-  printf("\nCarregando a matriz do arquivo...\n");
+  printf("Carregando a matriz do arquivo...\n");
   for(i = 0; i < num_linhas; i++) {
     for(j = 0; j < num_colunas; j++) {
       fscanf(pfile, "%lf", &vtemp);

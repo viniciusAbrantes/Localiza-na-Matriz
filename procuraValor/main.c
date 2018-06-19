@@ -17,7 +17,7 @@ int main( int argc, char *argv[ ]) {
 
   FILE *pfile = fopen(nome_arq, "r");
   if(pfile == NULL) {
-    printf("Erro!\nArquivo nao encontrado!\n");
+    printf("Erro!\nArquivo não encontrado!\n");
     return 0;
   }
   qtd_threads = atoi(argv[4]);

@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include "funções.h" //Arquivo contendo o cabeçalho das funções
 
-int main( int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
   int num_linhas, num_colunas, qtd_threads;
   int i;
   double valor;

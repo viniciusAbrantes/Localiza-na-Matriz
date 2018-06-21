@@ -60,12 +60,17 @@ void* procuraValor(void* arg) {
  * @param matriz Matriz binária.
  */
 void printCoordenadas(int num_linhas, int num_colunas, double matriz[num_linhas][num_colunas]) {
-  int i, j;
+  int i, j, qtd = 0;
 
   for(i = 0; i < num_linhas; i++) {
     for(j = 0; j < num_colunas; j++) {
-      if(matriz[i][j] == 1.0)
+      if(matriz[i][j] == 1.0) {
         printf("(%d,%d)\n", i, j);
+        qtd++;
+      }
     }
   }
+
+  if(qtd == 0) printf("Valor não existente na matriz!\n");
+
 }

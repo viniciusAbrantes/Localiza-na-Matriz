@@ -55,7 +55,7 @@ void* procuraValor(void* arg) {
 /**
  * Função para imprimir cordenadas do número encontrado.
  *
- * @param numa_linhas Número de linhas da matriz.
+ * @param num_linhas Número de linhas da matriz.
  * @param num_colunas Número de colunas da matriz.
  * @param matriz Matriz binária.
  */

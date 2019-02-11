@@ -12,5 +12,5 @@ Este projeto visa a criação de um programa que utilize múltiplas threads para
 ### Sobre os desenvolvedores:
 O projeto foi desenvolvido pelos seguintes alunos, no terceiro semestre do curso de Sistemas de Informação da Unicamp:
 - [Alfredo Albélis](https://github.com/AlfredoFilho)
-- Cléofas Peres
+- [Cléofas Peres](https://github.com/CleoPeres)
 - [Vinícius Abrantes](https://github.com/viniciusAbrantes)
